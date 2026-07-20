@@ -1,9 +1,10 @@
 import './style.css';
-import { drawTimer, createCanvas, renderInitial, FONTS } from './renderer.js';
+import { drawTimer, createCanvas, renderInitial, FONTS, LAYOUTS } from './renderer.js';
 import { createCountdown } from './timer.js';
 import { exportOverlay } from './exporter.js';
 
 const CORNERS = ['TL', 'TR', 'BL', 'BR'];
+const LAYOUT_KEYS = Object.keys(LAYOUTS);
 const BACKGROUNDS = ['green', 'black'];
 const FONT_KEYS = Object.keys(FONTS);
 
@@ -13,6 +14,7 @@ const appState = {
   corner: 'TL',
   background: 'green',
   font: 'orbitron',
+  layout: 'reel',
 };
 
 const stage = document.querySelector('#stage');
@@ -20,6 +22,7 @@ const durationInput = document.querySelector('#duration');
 const playButton = document.querySelector('#play');
 const hotspotButtons = Array.from(document.querySelectorAll('.hotspot'));
 const bgButtons = Array.from(document.querySelectorAll('.bg-option'));
+const layoutButtons = Array.from(document.querySelectorAll('.layout-option'));
 const fontSelect = document.querySelector('#font');
 const statusEl = document.querySelector('#status');
 const statusMessage = statusEl.querySelector('.status-message');
@@ -99,6 +102,22 @@ async function applyFont(font) {
     await document.fonts.load(`${weight} 16px ${family}`);
     paintIdle();
   }
+}
+
+function applyLayout(layout) {
+  if (!LAYOUT_KEYS.includes(layout)) return;
+  const changed = appState.layout !== layout;
+  appState.layout = layout;
+  const res = LAYOUTS[layout];
+  canvas.width = res.width;
+  canvas.height = res.height;
+  stage.style.aspectRatio = `${res.width} / ${res.height}`;
+  for (const el of layoutButtons) {
+    const isActive = el.dataset.layout === layout;
+    el.classList.toggle('is-active', isActive);
+    el.setAttribute('aria-pressed', String(isActive));
+  }
+  if (changed) paintIdle();
 }
 
 function updateStatus(percent, message) {
@@ -188,6 +207,15 @@ function wireFont() {
   });
 }
 
+function wireLayout() {
+  for (const el of layoutButtons) {
+    el.addEventListener('click', () => {
+      if (appState.phase !== 'idle') return;
+      applyLayout(el.dataset.layout);
+    });
+  }
+}
+
 function wireDuration() {
   durationInput.addEventListener('input', () => {
     const n = parseInputDuration();
@@ -219,15 +247,18 @@ async function boot() {
     await document.fonts.ready;
   }
 
-  canvas = createCanvas(stage);
+  const initLayout = LAYOUTS[appState.layout];
+  canvas = createCanvas(stage, initLayout.width, initLayout.height);
   ctx = canvas.getContext('2d');
 
   applyDuration(appState.duration, { commitInput: true });
   applyCorner(appState.corner);
   applyBackground(appState.background);
+  applyLayout(appState.layout);
   await applyFont(appState.font);
   wireHotspots();
   wireBackgrounds();
+  wireLayout();
   wireFont();
   wireDuration();
   playButton.addEventListener('click', onPlay);
