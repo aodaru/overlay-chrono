@@ -10,6 +10,12 @@ let loadPromise = null;
 let currentOnProgress = null;
 
 async function loadFFmpeg() {
+  if (typeof SharedArrayBuffer === 'undefined') {
+    throw new Error(
+      'SharedArrayBuffer no está disponible. Asegúrate de que el servidor envíe los headers COOP (same-origin) y COEP (require-corp).'
+    );
+  }
+
   const ffmpeg = new FFmpeg();
 
   ffmpeg.on('log', ({ message }) => {

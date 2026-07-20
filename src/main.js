@@ -153,7 +153,11 @@ async function startExport() {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(error);
-    window.alert(`Error al exportar: ${error.message}`);
+    const msg =
+      typeof error === 'string'
+        ? error
+        : error?.message || error?.toString?.() || 'Error desconocido';
+    window.alert(`Error al exportar: ${msg}`);
   } finally {
     finishExporting();
   }
