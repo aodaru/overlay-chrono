@@ -2,7 +2,7 @@
 
 ## Estado de la fase
 
-**✅ VALIDADA** (2026-07-19) — pendiente solo el criterio de merge (Grupo 5 del plan)
+**✅ COMPLETADA Y MERGEADA A `main`** (2026-07-19)
 
 ## Criterios de éxito
 
@@ -56,9 +56,9 @@ ls package-lock.json yarn.lock 2>/dev/null && echo "FALLO" || echo "OK"
 
 ## Criterio de merge a main
 
-- [ ] Todos los criterios marcados
-- [ ] PR abierto
-- [ ] Validación manual ejecutada
+- [x] Todos los criterios marcados
+- [x] PR abierto
+- [x] Validación manual ejecutada
 
 ## Anti-criterios (lo que NO debe pasar)
 

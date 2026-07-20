@@ -35,8 +35,8 @@ Marcar checkboxes al ejecutar.
 
 ## Grupo 5: Documentación y merge
 
-- [ ] Commit de todos los cambios
-- [ ] Push de la rama
-- [ ] Crear PR
-- [ ] Validar criterios de éxito
-- [ ] Mergear y limpiar
+- [x] Commit de todos los cambios
+- [x] Push de la rama
+- [x] Crear PR
+- [x] Validar criterios de éxito
+- [x] Mergear y limpiar

@@ -2,7 +2,7 @@
 
 ## Project state
 
-**Fase 0 (setup) implementada y validada** en la rama `feat/fase-0-setup-proyecto`: Vite 8 + estructura `src/` (stubs), headers COOP/COEP activos, `pnpm dev` levanta el layout base oscuro. Pendiente: primer commit/PR (Grupo 5 del plan) y Fases 1–6.
+**Fase 0 (setup) completada y mergeada a `main`**: Vite 8 + estructura `src/` (stubs), headers COOP/COEP activos, `pnpm dev` levanta el layout base oscuro. Próximo paso: Fase 1 (reloj funcional en pantalla). Fases pendientes: 1–6.
 
 ## Key constraints
 
