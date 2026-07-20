@@ -2,7 +2,7 @@
 
 ## Project state
 
-**Fase 0 (setup) completada y mergeada a `main`**: Vite 8 + estructura `src/` (stubs), headers COOP/COEP activos, `pnpm dev` levanta el layout base oscuro. Próximo paso: Fase 1 (reloj funcional en pantalla). Fases pendientes: 1–6.
+**Fase 1 (reloj funcional en pantalla) completada y mergeada a `main`**: cuenta regresiva visible en el navegador con input de duración (1–99 s), selector de 4 esquinas y flujo Play/End que oculta los controles durante el conteo. Motor wall-clock en `timer.js`; el motor determinístico (`renderFrame(ctx, t)`) llega en Fase 3. Próximo paso: Fase 2 (fondo configurable). Fases pendientes: 2–6.
 
 ## Key constraints
 

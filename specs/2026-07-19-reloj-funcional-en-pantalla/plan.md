@@ -54,8 +54,8 @@ Marcar checkboxes al ejecutar.
 
 ## Grupo 7: Verificación y merge
 
-32. [ ] Ejecutar la verificación descrita en `validation.md`
-33. [ ] Commit con mensaje siguiendo el estilo del repo (`fase 1: …` por grupo, cierre administrativo al final)
-34. [ ] Push de la rama
-35. [ ] Abrir PR
+32. [x] Ejecutar la verificación descrita en `validation.md`
+33. [x] Commit con mensaje siguiendo el estilo del repo (`fase 1: …` por grupo, cierre administrativo al final)
+34. [x] Push de la rama
+35. [x] Abrir PR
 36. [ ] Mergear a `main` y limpiar la rama

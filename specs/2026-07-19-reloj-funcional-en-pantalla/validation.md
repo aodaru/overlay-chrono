@@ -2,71 +2,71 @@
 
 ## Estado de la fase
 
-**⏳ PENDIENTE** — no iniciada. Esta checklist se ejecuta al terminar la implementación.
+**✅ COMPLETADA** — implementación y verificación manual realizadas en `feat/fase-1-reloj-funcional-en-pantalla` antes del merge.
 
 ## Criterios de éxito
 
 ### 1. Layout y entorno
 
-- [ ] `pnpm dev` levanta sin errores ni warnings nuevos
-- [ ] La pantalla muestra dos zonas: mini-canvas 9:16 a la izquierda, panel de controles a la derecha, sobre fondo oscuro
-- [ ] El canvas principal tiene atributos `width="1080" height="1920"`; CSS lo escala al contenedor sin distorsión
-- [ ] `crossOriginIsolated === true` en la consola del navegador
-- [ ] No aparece ningún elemento de la demo de Vite ni boilerplate de scaffolds anteriores
-- [ ] No hay artefactos de `npm` o `yarn` en el repo (solo `pnpm-lock.yaml`)
+- [x] `pnpm dev` levanta sin errores ni warnings nuevos
+- [x] La pantalla muestra dos zonas: mini-canvas 9:16 a la izquierda, panel de controles a la derecha, sobre fondo oscuro
+- [x] El canvas principal tiene atributos `width="1080" height="1920"`; CSS lo escala al contenedor sin distorsión
+- [x] `crossOriginIsolated === true` en la consola del navegador
+- [x] No aparece ningún elemento de la demo de Vite ni boilerplate de scaffolds anteriores
+- [x] No hay artefactos de `npm` o `yarn` en el repo (solo `pnpm-lock.yaml`)
 
 ### 2. Render inicial (estado idle)
 
-- [ ] Al abrir la app se ve el número `15` (default) en la esquina superior izquierda (default), en blanco, fuente monospace, con padding de 2 dígitos
-- [ ] El número tiene un halo/sombra sutil que lo mantiene legible sobre el fondo oscuro neutro
-- [ ] El número está dentro del encuadre (no se sale del canvas 1080×1920)
-- [ ] `document.fonts.ready` se espera antes del primer `drawTimer`
+- [x] Al abrir la app se ve el número `15` (default) en la esquina superior izquierda (default), en blanco, fuente monospace, con padding de 2 dígitos
+- [x] El número tiene un halo/sombra sutil que lo mantiene legible sobre el fondo oscuro neutro
+- [x] El número está dentro del encuadre (no se sale del canvas 1080×1920)
+- [x] `document.fonts.ready` se espera antes del primer `drawTimer`
 
 ### 3. Selector de esquina
 
-- [ ] El mini-canvas 9:16 muestra los 4 hotspots (uno por esquina) con feedback visual al pasar el cursor
-- [ ] El hotspot activo (default `TL`) está resaltado (círculo, borde o equivalente)
-- [ ] Click en otro hotspot → el highlight se mueve y el número del canvas principal se re-renderiza en la nueva esquina
-- [ ] Las 4 esquinas (`TL`, `TR`, `BL`, `BR`) posicionan el número correctamente: alineado al borde correspondiente con el margen definido
+- [x] El mini-canvas 9:16 muestra los 4 hotspots (uno por esquina) con feedback visual al pasar el cursor
+- [x] El hotspot activo (default `TL`) está resaltado (círculo, borde o equivalente)
+- [x] Click en otro hotspot → el highlight se mueve y el número del canvas principal se re-renderiza en la nueva esquina
+- [x] Las 4 esquinas (`TL`, `TR`, `BL`, `BR`) posicionan el número correctamente: alineado al borde correspondiente con el margen definido
 
 ### 4. Input de duración
 
-- [ ] El input acepta valores enteros en el rango `1–99`
-- [ ] El default es `15`
-- [ ] Valores fuera de rango se clampean al recargar o al perder el foco (`<1 → 1`, `>99 → 99`)
-- [ ] Decimales, `NaN` o vacío: el botón Play queda deshabilitado
-- [ ] Cambiar la duración re-renderiza el número inicial en el canvas (sigue mostrando la esquina seleccionada)
+- [x] El input acepta valores enteros en el rango `1–99`
+- [x] El default es `15`
+- [x] Valores fuera de rango se clampean al recargar o al perder el foco (`<1 → 1`, `>99 → 99`)
+- [x] Decimales, `NaN` o vacío: el botón Play queda deshabilitado
+- [x] Cambiar la duración re-renderiza el número inicial en el canvas (sigue mostrando la esquina seleccionada)
 
 ### 5. Botón Play
 
-- [ ] El botón Play es visible y está habilitado con la configuración por defecto
-- [ ] Click en Play:
+- [x] El botón Play es visible y está habilitado con la configuración por defecto
+- [x] Click en Play:
   - El panel de controles desaparece
   - El mini-canvas de selección también desaparece (queda solo el canvas principal con el número)
   - La cuenta atrás arranca mostrando `15`
 
 ### 6. Cuenta atrás
 
-- [ ] La secuencia visible es exactamente: `15`, `14`, `13`, … `02`, `01` (un valor por segundo, padding de 2 dígitos)
-- [ ] El último valor mostrado es `01`; tras 1s con `01` los controles reaparecen (no se muestra `00`)
-- [ ] Duración total medida con cronómetro externo (móvil o `stopwatch`): **15.0 s ± 1.0 s** (tolerancia del wall-clock)
-- [ ] El número permanece en la esquina seleccionada durante toda la cuenta
-- [ ] En ningún momento del conteo hay un control, botón, hotspot o etiqueta visible — solo el número sobre el canvas
+- [x] La secuencia visible es exactamente: `15`, `14`, `13`, … `02`, `01` (un valor por segundo, padding de 2 dígitos)
+- [x] El último valor mostrado es `01`; tras 1s con `01` los controles reaparecen (no se muestra `00`)
+- [x] Duración total medida con cronómetro externo (móvil o `stopwatch`): **15.0 s ± 1.0 s** (tolerancia del wall-clock)
+- [x] El número permanece en la esquina seleccionada durante toda la cuenta
+- [x] En ningún momento del conteo hay un control, botón, hotspot o etiqueta visible — solo el número sobre el canvas
 
 ### 7. Robustez por valores y esquinas
 
-- [ ] Probar con duración `1`: la cuenta muestra `01` durante 1s y termina (~1s total, ±1s)
-- [ ] Probar con duración `99`: la cuenta muestra `99`, `98`, … `02`, `01` y termina (~99s total, ±1s)
-- [ ] Probar las 4 esquinas: en cada una el número está alineado al borde correcto y no se sale del encuadre
-- [ ] Probar `TL` + duración `15`, `TR` + duración `30`, `BL` + duración `7`, `BR` + duración `60` — todas funcionan
+- [x] Probar con duración `1`: la cuenta muestra `01` durante 1s y termina (~1s total, ±1s)
+- [x] Probar con duración `99`: la cuenta muestra `99`, `98`, … `02`, `01` y termina (~99s total, ±1s)
+- [x] Probar las 4 esquinas: en cada una el número está alineado al borde correcto y no se sale del encuadre
+- [x] Probar `TL` + duración `15`, `TR` + duración `30`, `BL` + duración `7`, `BR` + duración `60` — todas funcionan
 
 ### 8. Consola y código
 
-- [ ] No hay errores ni warnings en la consola del navegador durante el flujo completo
-- [ ] No hay `Date.now()` ni `performance.now()` usados para calcular el frame del render (D4)
-- [ ] No se introdujo ninguna dependencia nueva en `package.json` (la fase no las necesita)
-- [ ] `src/renderer.js`, `src/timer.js` y `src/main.js` son los módulos que implementan la fase; `src/exporter.js` permanece como stub
-- [ ] Sin frameworks, sin Tailwind, sin preprocesadores
+- [x] No hay errores ni warnings en la consola del navegador durante el flujo completo
+- [x] No hay `Date.now()` ni `performance.now()` usados para calcular el frame del render (D4)
+- [x] No se introdujo ninguna dependencia nueva en `package.json` (la fase no las necesita)
+- [x] `src/renderer.js`, `src/timer.js` y `src/main.js` son los módulos que implementan la fase; `src/exporter.js` permanece como stub
+- [x] Sin frameworks, sin Tailwind, sin preprocesadores
 
 ## Cómo verificar
 
