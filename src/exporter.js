@@ -3,19 +3,13 @@ import { fetchFile, toBlobURL } from '@ffmpeg/util';
 import { FPS, renderFrame } from './renderer.js';
 
 const CORE_VERSION = '0.12.10';
-const CORE_BASE_URL = `https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@${CORE_VERSION}/dist/esm`;
+const CORE_BASE_URL = `https://cdn.jsdelivr.net/npm/@ffmpeg/core@${CORE_VERSION}/dist/esm`;
 
 let ffmpegInstance = null;
 let loadPromise = null;
 let currentOnProgress = null;
 
 async function loadFFmpeg() {
-  if (typeof SharedArrayBuffer === 'undefined') {
-    throw new Error(
-      'SharedArrayBuffer no está disponible. Asegúrate de que el servidor envíe los headers COOP (same-origin) y COEP (require-corp).'
-    );
-  }
-
   const ffmpeg = new FFmpeg();
 
   ffmpeg.on('log', ({ message }) => {
@@ -34,7 +28,6 @@ async function loadFFmpeg() {
   await ffmpeg.load({
     coreURL: await toBlobURL(`${CORE_BASE_URL}/ffmpeg-core.js`, 'text/javascript'),
     wasmURL: await toBlobURL(`${CORE_BASE_URL}/ffmpeg-core.wasm`, 'application/wasm'),
-    workerURL: await toBlobURL(`${CORE_BASE_URL}/ffmpeg-core.worker.js`, 'text/javascript'),
   });
 
   return ffmpeg;
@@ -80,9 +73,9 @@ function downloadBlob(blob, filename) {
 export async function exportOverlay({ canvas, state, onProgress }) {
   const totalFrames = Math.round(state.duration * FPS);
 
-  // Aviso de primera carga pesada: el core de FFmpeg.wasm pesa ~31 MB.
+  // Aviso de primera carga pesada: el core de FFmpeg.wasm pesa ~24 MB.
   if (!ffmpegInstance?.loaded) {
-    onProgress?.(0, 'Cargando FFmpeg por primera vez (~31 MB)…');
+    onProgress?.(0, 'Cargando FFmpeg por primera vez (~24 MB)…');
   }
 
   const ffmpeg = await getFFmpeg();
