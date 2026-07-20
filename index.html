@@ -4,9 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Overlay Chrono</title>
+    <link rel="icon" href="data:," />
   </head>
   <body>
-    <main id="app"></main>
+    <main id="app">
+      <div id="stage">
+        <div id="corner-picker" role="group" aria-label="Selector de esquina">
+          <button type="button" class="hotspot" data-corner="TL" aria-label="Esquina superior izquierda" aria-pressed="true"></button>
+          <button type="button" class="hotspot" data-corner="TR" aria-label="Esquina superior derecha" aria-pressed="false"></button>
+          <button type="button" class="hotspot" data-corner="BL" aria-label="Esquina inferior izquierda" aria-pressed="false"></button>
+          <button type="button" class="hotspot" data-corner="BR" aria-label="Esquina inferior derecha" aria-pressed="false"></button>
+        </div>
+      </div>
+      <div id="controls">
+        <label class="field" for="duration">
+          <span class="field-label">Duración (s)</span>
+          <input id="duration" type="number" min="1" max="99" step="1" value="15" inputmode="numeric" />
+        </label>
+        <button id="play" type="button">Play</button>
+      </div>
+    </main>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
