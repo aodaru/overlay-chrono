@@ -1,15 +1,18 @@
 import { formatSeconds } from './timer.js';
 
-export const WIDTH = 1080;
-export const HEIGHT = 1920;
+export const LAYOUTS = {
+  reel: { width: 1080, height: 1920 },
+  post: { width: 1080, height: 1080 },
+};
+
 export const FPS = 30;
 
-// Distancia del reloj a los bordes del encuadre vertical 9:16.
-const MARGIN_X = 80;
-const MARGIN_Y = 96;
-
-// El reloj ocupa ~18 % del ancho del canvas.
-const FONT_SIZE = Math.round(WIDTH * 0.18);
+const MARGIN_X_RATIO = 80 / 1080;
+const MARGIN_Y_RATIO = 96 / 1920;
+const FONT_SIZE_RATIO = 0.18;
+const SHADOW_BLUR_RATIO = 32 / 194;
+const SHADOW_OFFSET_Y_RATIO = 8 / 194;
+const OUTLINE_WIDTH_RATIO = 0.075;
 
 export const BACKGROUNDS = {
   green: '#00FF00',
@@ -25,91 +28,62 @@ export const FONTS = {
 };
 
 const DEFAULT_FONT_KEY = 'orbitron';
+const SHADOW_COLOR = 'rgba(0, 0, 0, 0.75)';
+const OUTLINE_COLOR = 'rgba(0, 0, 0, 0.55)';
 
-function getFontSpec(fontKey) {
+function getFontSpec(fontKey, fontSize) {
   const config = FONTS[fontKey] ?? FONTS[DEFAULT_FONT_KEY];
-  return `${config.weight} ${FONT_SIZE}px ${config.family}`;
+  return `${config.weight} ${fontSize}px ${config.family}`;
 }
 
-const SHADOW_COLOR = 'rgba(0, 0, 0, 0.75)';
-const SHADOW_BLUR = 32;
-const SHADOW_OFFSET_Y = 8;
-const OUTLINE_COLOR = 'rgba(0, 0, 0, 0.55)';
-const OUTLINE_WIDTH = Math.max(6, Math.round(FONT_SIZE * 0.075));
-
-function cornerAnchor(corner) {
+function cornerAnchor(corner, width, height, marginX, marginY) {
   switch (corner) {
     case 'TR':
-      return {
-        x: WIDTH - MARGIN_X,
-        y: MARGIN_Y,
-        align: 'right',
-        baseline: 'top',
-      };
+      return { x: width - marginX, y: marginY, align: 'right', baseline: 'top' };
     case 'BL':
-      return {
-        x: MARGIN_X,
-        y: HEIGHT - MARGIN_Y,
-        align: 'left',
-        baseline: 'bottom',
-      };
+      return { x: marginX, y: height - marginY, align: 'left', baseline: 'bottom' };
     case 'BR':
-      return {
-        x: WIDTH - MARGIN_X,
-        y: HEIGHT - MARGIN_Y,
-        align: 'right',
-        baseline: 'bottom',
-      };
+      return { x: width - marginX, y: height - marginY, align: 'right', baseline: 'bottom' };
     case 'TL':
     default:
-      return {
-        x: MARGIN_X,
-        y: MARGIN_Y,
-        align: 'left',
-        baseline: 'top',
-      };
+      return { x: marginX, y: marginY, align: 'left', baseline: 'top' };
   }
 }
 
-/**
- * Dibuja un fotograma puro del overlay en el instante `t` (segundos).
- * No depende de relojes de pared: el mismo `t` siempre produce el mismo píxel.
- *
- * @param {CanvasRenderingContext2D} ctx
- * @param {number} t — instante en segundos, 0 <= t < duration
- * @param {object} state — { duration, corner, background }
- */
-export function renderFrame(ctx, t, { duration, corner, background = 'green', font = DEFAULT_FONT_KEY }) {
+export function renderFrame(ctx, t, { duration, corner, background = 'green', font = DEFAULT_FONT_KEY, width = 1080, height = 1920 }) {
   const bg = BACKGROUNDS[background] ?? BACKGROUNDS.green;
+  const baseSize = Math.min(width, height);
+  const fontSize = Math.round(baseSize * FONT_SIZE_RATIO);
+  const marginX = Math.round(width * MARGIN_X_RATIO);
+  const marginY = Math.round(height * MARGIN_Y_RATIO);
+  const outlineWidth = Math.max(6, Math.round(fontSize * OUTLINE_WIDTH_RATIO));
+  const shadowBlur = Math.round(fontSize * SHADOW_BLUR_RATIO);
+  const shadowOffsetY = Math.round(fontSize * SHADOW_OFFSET_Y_RATIO);
 
   ctx.save();
   ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, WIDTH, HEIGHT);
+  ctx.fillRect(0, 0, width, height);
 
-  // Valor entero visible de la cuenta regresiva en el instante t.
-  // t=0.0 → duration; t=0.999 → duration; t=1.0 → duration-1.
   const elapsed = Math.floor(t + 1e-9);
   const value = Math.max(0, duration - elapsed);
   const text = formatSeconds(value);
 
-  const { x, y, align, baseline } = cornerAnchor(corner);
+  const { x, y, align, baseline } = cornerAnchor(corner, width, height, marginX, marginY);
 
-  ctx.font = getFontSpec(font);
+  ctx.font = getFontSpec(font, fontSize);
   ctx.textAlign = align;
   ctx.textBaseline = baseline;
   ctx.lineJoin = 'round';
 
-  // Halo oscuro + contorno para legibilidad sobre cualquier video de fondo.
   ctx.shadowColor = SHADOW_COLOR;
-  ctx.shadowBlur = SHADOW_BLUR;
+  ctx.shadowBlur = shadowBlur;
   ctx.shadowOffsetX = 0;
-  ctx.shadowOffsetY = SHADOW_OFFSET_Y;
+  ctx.shadowOffsetY = shadowOffsetY;
 
-  ctx.lineWidth = OUTLINE_WIDTH;
+  ctx.lineWidth = outlineWidth;
   ctx.strokeStyle = OUTLINE_COLOR;
   ctx.strokeText(text, x, y);
 
-  // Relleno blanco limpio encima del halo.
   ctx.shadowColor = 'transparent';
   ctx.fillStyle = '#ffffff';
   ctx.fillText(text, x, y);
@@ -117,10 +91,10 @@ export function renderFrame(ctx, t, { duration, corner, background = 'green', fo
   ctx.restore();
 }
 
-export function createCanvas(stage) {
+export function createCanvas(stage, width, height) {
   const canvas = document.createElement('canvas');
-  canvas.width = WIDTH;
-  canvas.height = HEIGHT;
+  canvas.width = width;
+  canvas.height = height;
   stage.insertBefore(canvas, stage.firstChild);
   return canvas;
 }

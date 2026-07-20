@@ -267,6 +267,39 @@ body.is-exporting #status {
   font-weight: 600;
 }
 
+.layout-option {
+  flex: 1 1 0;
+  font: inherit;
+  font-size: 14px;
+  padding: 10px 12px;
+  background: var(--bg);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
+}
+
+.layout-option:hover,
+.layout-option:focus-visible {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.layout-option:focus-visible {
+  outline: none;
+}
+
+.layout-option.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+  font-weight: 600;
+}
+
 #play {
   font: inherit;
   font-size: 16px;

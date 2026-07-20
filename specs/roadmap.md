@@ -43,6 +43,13 @@ Orden de implementación en fases muy pequeñas. Cada fase es verificable de for
 - Estética final: tipografía digital, tamaño, márgenes por esquina, sombra/halo para legibilidad sobre cualquier video de fondo.
 - ✅ El overlay se ve nítido y profesional superpuesto en un Reel de prueba, tanto con chroma key (verde) como con fusión (negro).
 
+## Fase 7 — Selector de layout (Reel / Post)
+
+- ✅ Selector de resolución: **Reel** (1080×1920, 9:16 vertical) / **Post** (1080×1080, 1:1 cuadrado).
+- ✅ Canvas, preview y exportación se adaptan a la resolución seleccionada.
+- ✅ El reloj se reubica con márgenes proporcionales en ambas resoluciones.
+- ✅ Se genera MP4 con la resolución seleccionada y duración exacta.
+
 ## Descartado por ahora
 
 HIIT, sonido, presets, textos personalizados, drag & drop, simulación de GUI de Instagram (ver `mission.md` → Fuera de alcance).

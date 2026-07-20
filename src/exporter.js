@@ -130,7 +130,7 @@ export async function exportOverlay({ canvas, state, onProgress }) {
   const buffer = data.buffer ? data.buffer : data;
   const blob = new Blob([buffer], { type: 'video/mp4' });
 
-  const filename = `overlay-chrono-${state.duration}s.mp4`;
+  const filename = `overlay-chrono-${state.duration}s-${state.layout}.mp4`;
   downloadBlob(blob, filename);
 
   // Limpieza del FS virtual.

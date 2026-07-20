@@ -2,7 +2,7 @@
 
 ## Project state
 
-**Fases 1–6 completadas**: la app genera overlays de cuenta regresiva y exporta un MP4 1080×1920 @ 30 fps de duración exacta. Incluye selector de fondo (verde/negro), motor determinístico `renderFrame(ctx, t)` en `src/renderer.js`, exportación con FFmpeg.wasm en `src/exporter.js`, progreso de exportación y pulido visual del reloj. No quedan fases pendientes del alcance actual.
+**Fases 1–7 completadas**: la app genera overlays de cuenta regresiva y exporta un MP4 en resoluciones Reel (1080×1920) o Post (1080×1080) @ 30 fps de duración exacta. Incluye selector de fondo (verde/negro), selector de layout (Reel/Post), motor determinístico `renderFrame(ctx, t)` parametrizado por resolución en `src/renderer.js`, exportación con FFmpeg.wasm en `src/exporter.js`, progreso de exportación y pulido visual del reloj. No quedan fases pendientes del alcance actual.
 
 ## Key constraints
 
