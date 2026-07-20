@@ -1,19 +1,29 @@
 import './style.css';
-import { drawTimer, createCanvas, renderInitial } from './renderer.js';
+import { drawTimer, createCanvas, renderInitial, FONTS } from './renderer.js';
 import { createCountdown } from './timer.js';
+import { exportOverlay } from './exporter.js';
 
 const CORNERS = ['TL', 'TR', 'BL', 'BR'];
+const BACKGROUNDS = ['green', 'black'];
+const FONT_KEYS = Object.keys(FONTS);
 
 const appState = {
   phase: 'idle',
   duration: 15,
   corner: 'TL',
+  background: 'green',
+  font: 'orbitron',
 };
 
 const stage = document.querySelector('#stage');
 const durationInput = document.querySelector('#duration');
 const playButton = document.querySelector('#play');
 const hotspotButtons = Array.from(document.querySelectorAll('.hotspot'));
+const bgButtons = Array.from(document.querySelectorAll('.bg-option'));
+const fontSelect = document.querySelector('#font');
+const statusEl = document.querySelector('#status');
+const statusMessage = statusEl.querySelector('.status-message');
+const statusProgress = statusEl.querySelector('#status-progress');
 
 let canvas = null;
 let ctx = null;
@@ -66,6 +76,70 @@ function applyCorner(corner) {
   if (changed) paintIdle();
 }
 
+function applyBackground(background) {
+  if (!BACKGROUNDS.includes(background)) return;
+  const changed = appState.background !== background;
+  appState.background = background;
+  for (const el of bgButtons) {
+    const isActive = el.dataset.bg === background;
+    el.classList.toggle('is-active', isActive);
+    el.setAttribute('aria-pressed', String(isActive));
+  }
+  if (changed) paintIdle();
+}
+
+async function applyFont(font) {
+  if (!FONT_KEYS.includes(font)) return;
+  const changed = appState.font !== font;
+  appState.font = font;
+  if (fontSelect.value !== font) fontSelect.value = font;
+
+  if (changed) {
+    const { family, weight } = FONTS[font];
+    await document.fonts.load(`${weight} 16px ${family}`);
+    paintIdle();
+  }
+}
+
+function updateStatus(percent, message) {
+  statusProgress.value = percent;
+  statusMessage.textContent = message;
+  statusEl.setAttribute('aria-busy', 'true');
+}
+
+function resetStatus() {
+  statusProgress.value = 0;
+  statusMessage.textContent = 'Preparando exportación…';
+  statusEl.setAttribute('aria-busy', 'false');
+}
+
+function finishExporting() {
+  appState.phase = 'idle';
+  document.body.classList.remove('is-running', 'is-exporting');
+  resetStatus();
+  paintIdle();
+}
+
+async function startExport() {
+  if (appState.phase !== 'running') return;
+  appState.phase = 'exporting';
+  document.body.classList.add('is-exporting');
+
+  try {
+    await exportOverlay({
+      canvas,
+      state: appState,
+      onProgress: updateStatus,
+    });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
+    window.alert(`Error al exportar: ${error.message}`);
+  } finally {
+    finishExporting();
+  }
+}
+
 function onPlay() {
   if (appState.phase !== 'idle') return;
   if (!isValidDuration(appState.duration)) return;
@@ -75,17 +149,15 @@ function onPlay() {
   durationInput.blur();
   playButton.blur();
 
-  drawTimer(ctx, appState.duration, appState.corner);
+  drawTimer(ctx, appState.duration, appState);
 
   countdown?.cancel();
   countdown = createCountdown({
     duration: appState.duration,
-    onTick: (value) => drawTimer(ctx, value, appState.corner),
+    onTick: (value) => drawTimer(ctx, value, appState),
     onEnd: () => {
-      appState.phase = 'idle';
-      document.body.classList.remove('is-running');
       countdown = null;
-      paintIdle();
+      startExport();
     },
   });
   countdown.start();
@@ -98,6 +170,22 @@ function wireHotspots() {
       applyCorner(el.dataset.corner);
     });
   }
+}
+
+function wireBackgrounds() {
+  for (const el of bgButtons) {
+    el.addEventListener('click', () => {
+      if (appState.phase !== 'idle') return;
+      applyBackground(el.dataset.bg);
+    });
+  }
+}
+
+function wireFont() {
+  fontSelect.addEventListener('change', () => {
+    if (appState.phase !== 'idle') return;
+    applyFont(fontSelect.value);
+  });
 }
 
 function wireDuration() {
@@ -136,8 +224,11 @@ async function boot() {
 
   applyDuration(appState.duration, { commitInput: true });
   applyCorner(appState.corner);
-  paintIdle();
+  applyBackground(appState.background);
+  await applyFont(appState.font);
   wireHotspots();
+  wireBackgrounds();
+  wireFont();
   wireDuration();
   playButton.addEventListener('click', onPlay);
 }
