@@ -2,7 +2,7 @@
 
 ## Project state
 
-**Fase 1 (reloj funcional en pantalla) completada y mergeada a `main`**: cuenta regresiva visible en el navegador con input de duración (1–99 s), selector de 4 esquinas y flujo Play/End que oculta los controles durante el conteo. Motor wall-clock en `timer.js`; el motor determinístico (`renderFrame(ctx, t)`) llega en Fase 3. Próximo paso: Fase 2 (fondo configurable). Fases pendientes: 2–6.
+**Fases 1–6 completadas**: la app genera overlays de cuenta regresiva y exporta un MP4 1080×1920 @ 30 fps de duración exacta. Incluye selector de fondo (verde/negro), motor determinístico `renderFrame(ctx, t)` en `src/renderer.js`, exportación con FFmpeg.wasm en `src/exporter.js`, progreso de exportación y pulido visual del reloj. No quedan fases pendientes del alcance actual.
 
 ## Key constraints
 

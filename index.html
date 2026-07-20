@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Overlay Chrono</title>
     <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Press+Start+2P&family=Sixtyfour&family=Keania+One&family=Big+Shoulders+Stencil:wght@700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <main id="app">
@@ -15,12 +21,38 @@
           <button type="button" class="hotspot" data-corner="BL" aria-label="Esquina inferior izquierda" aria-pressed="false"></button>
           <button type="button" class="hotspot" data-corner="BR" aria-label="Esquina inferior derecha" aria-pressed="false"></button>
         </div>
+        <div id="status" aria-live="polite" aria-busy="false">
+          <div class="status-box">
+            <p class="status-message">Preparando exportación…</p>
+            <progress id="status-progress" value="0" max="100"></progress>
+          </div>
+        </div>
       </div>
       <div id="controls">
         <label class="field" for="duration">
           <span class="field-label">Duración (s)</span>
           <input id="duration" type="number" min="1" max="99" step="1" value="15" inputmode="numeric" />
         </label>
+
+        <div class="field" role="group" aria-label="Fondo del video">
+          <span class="field-label">Fondo</span>
+          <div class="segmented">
+            <button type="button" class="bg-option is-active" data-bg="green" aria-pressed="true">Verde (chroma)</button>
+            <button type="button" class="bg-option" data-bg="black" aria-pressed="false">Negro (fusión)</button>
+          </div>
+        </div>
+
+        <label class="field" for="font">
+          <span class="field-label">Fuente</span>
+          <select id="font">
+            <option value="orbitron" selected>Orbitron</option>
+            <option value="press-start-2p">Press Start 2P</option>
+            <option value="sixtyfour">Sixtyfour</option>
+            <option value="keania-one">Keania One</option>
+            <option value="big-shoulders-stencil">Big Shoulders Stencil</option>
+          </select>
+        </label>
+
         <button id="play" type="button">Play</button>
       </div>
     </main>
