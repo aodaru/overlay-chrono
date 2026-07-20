@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creador de Overlays HIIT - Formato Reels</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Orbitron para un look deportivo digital -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0f172a;
+    }
+    .digital-font {
+      font-family: 'Orbitron', sans-serif;
+    }
+    /* Barra de desplazamiento personalizada */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1e293b;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col overflow-x-hidden">
+
+  <!-- Encabezado / Header -->
+  <header class="bg-slate-900 border-b border-slate-800 py-4 px-6 flex items-center justify-between z-10 shrink-0">
+    <div class="flex items-center gap-3">
+      <div class="p-2 bg-rose-500 rounded-lg text-white font-bold tracking-wider text-xs shadow-lg shadow-rose-500/20">
+        HIIT
+      </div>
+      <div>
+        <h1 class="font-bold text-lg leading-tight">Creador de Overlays HIIT</h1>
+        <p class="text-xs text-slate-400">Diseña y graba cronómetros deportivos para Instagram Reels & TikTok</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <span class="text-xs bg-slate-800 text-slate-300 px-3 py-1.5 rounded-full border border-slate-700 hidden sm:inline-flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        Modo Captura Listo
+      </span>
+    </div>
+  </header>
+
+  <!-- Espacio de trabajo principal / Main Workspace -->
+  <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+    
+    <!-- Panel izquierdo: Vista previa del celular -->
+    <div class="flex-1 p-4 lg:p-6 flex flex-col items-center justify-center bg-slate-950 relative overflow-y-auto min-h-[500px]">
+      
+      <!-- Indicaciones flotantes en la parte superior -->
+      <div class="absolute top-4 left-4 right-4 z-10 flex flex-wrap gap-2 justify-center pointer-events-none">
+        <span class="bg-black/75 backdrop-blur-md text-xs text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 shadow-md">
+          💡 <strong>Tip:</strong> Elige fondo <strong>"Pantalla Verde"</strong> para grabarlo y usarlo como croma en tu editor de video.
+        </span>
+      </div>
+
+      <!-- Maqueta del celular en formato 9:16 -->
+      <div class="relative w-full max-w-[340px] xs:max-w-[360px] aspect-[9/16] rounded-[32px] border-[6px] border-slate-800 shadow-2xl overflow-hidden bg-black flex flex-col">
+        
+        <!-- Notch de la cámara frontal simulada -->
+        <div class="absolute top-3 left-1/2 -translate-x-1/2 w-24 h-4 bg-slate-800 rounded-full z-30 flex items-center justify-end px-2">
+          <div class="w-1.5 h-1.5 rounded-full bg-blue-900"></div>
+        </div>
+
+        <!-- Interfaz simulada de Instagram (Se puede ocultar) -->
+        <div id="instagram-gui" class="absolute inset-0 z-20 pointer-events-none flex flex-col justify-between p-4 text-white font-sans text-xs transition-opacity duration-300">
+          <!-- Parte superior -->
+          <div class="flex justify-between items-center mt-3">
+            <span class="font-semibold text-[10px]">Siguiendo</span>
+            <div class="flex gap-1.5">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </div>
+          </div>
+          <!-- Barra de controles derecha (Iconos de Reel) -->
+          <div class="absolute right-3 bottom-24 flex flex-col items-center gap-4 text-white">
+            <div class="flex flex-col items-center">
+              <span class="bg-black/40 p-2 rounded-full"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></span>
+              <span class="text-[9px] mt-1 shadow-sm">18.5K</span>
+            </div>
+            <div class="flex flex-col items-center">
+              <span class="bg-black/40 p-2 rounded-full"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg></span>
+              <span class="text-[9px] mt-1 shadow-sm">412</span>
+            </div>
+            <div class="flex flex-col items-center">
+              <span class="bg-black/40 p-2 rounded-full"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg></span>
+              <span class="text-[9px] mt-1 shadow-sm">Compartir</span>
+            </div>
+          </div>
+          <!-- Detalles del creador en la esquina inferior -->
+          <div class="flex flex-col gap-1 mt-auto max-w-[80%]">
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 rounded-full bg-rose-500 border border-white/50 flex items-center justify-center font-bold text-[9px]">GO</div>
+              <span class="font-bold">@fit_trainer</span>
+            </div>
+            <p class="text-[10px] text-slate-200 line-clamp-2">¡Sigue esta rutina de 15 segundos para quemar grasa! 🔥💪 #HIIT #Fitness #Workout</p>
+          </div>
+        </div>
+
+        <!-- Contenedor del contenido del celular -->
+        <div class="absolute inset-0 z-10 flex flex-col justify-between py-12 px-6 overflow-hidden">
+          
+          <!-- Fondo: Croma Verde, Video de Demostración o Negro Puro -->
+          <div id="reel-backdrop" class="absolute inset-0 transition-all duration-300 bg-slate-900">
+            <!-- Capa verde para Chroma Key (por defecto activo) -->
+            <div id="green-screen-layer" class="hidden absolute inset-0 bg-[#00FF00]"></div>
+            
+            <!-- Video en bucle de demostración -->
+            <video id="video-backdrop" class="absolute inset-0 w-full h-full object-cover opacity-60" autoplay loop muted playsinline>
+              <source src="https://assets.mixkit.co/videos/preview/mixkit-athletic-woman-doing-jumping-jacks-in-the-gym-40280-large.mp4" type="video/mp4">
+            </video>
+            
+            <!-- Capa de color sólido (Negro puro) -->
+            <div id="solid-backdrop" class="hidden absolute inset-0 bg-slate-950"></div>
+          </div>
+
+          <!-- Widget del cronómetro HIIT (Posicionable por arrastre / drag) -->
+          <div id="widget-container" class="absolute left-1/2 -translate-x-1/2 transition-all duration-300 flex flex-col items-center justify-center z-20 cursor-grab active:cursor-grabbing" style="top: 25%; scale: 1;">
+            
+            <div id="timer-card" class="rounded-2xl px-6 py-5 flex flex-col items-center justify-between gap-3 shadow-2xl transition-all duration-300" style="background-color: rgba(0, 0, 0, 0.85); width: 210px; aspect-ratio: 9/12; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(8px);">
+              
+              <!-- Texto Superior (Fase) -->
+              <p id="widget-label" class="text-[11px] tracking-[4px] uppercase font-semibold text-center text-rose-500 opacity-90 transition-colors">TRABAJO</p>
+              
+              <!-- Reloj Digital con LEDs de 7 segmentos -->
+              <div class="flex flex-col items-center justify-center my-auto">
+                <div id="widget-digits" class="digits flex justify-center gap-1.5">
+                  <!-- Se genera dinámicamente con JS -->
+                </div>
+                
+                <!-- Indicador de Rondas -->
+                <div id="round-indicator-container" class="mt-2 text-[10px] tracking-[1px] text-slate-400 font-bold">
+                  RONDA <span id="current-round-text" class="text-white">1</span>/<span id="total-rounds-text">4</span>
+                </div>
+              </div>
+              
+              <!-- Texto Inferior (Motivación) -->
+              <p id="widget-tag" class="text-xs tracking-[5px] uppercase font-bold text-slate-200 text-center transition-colors">¡DALE CON TODO!</p>
+              
+            </div>
+
+          </div>
+
+          <!-- Controles de reproducción rápidos integrados en el celular -->
+          <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex items-center justify-center gap-2 pointer-events-auto bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+            <button id="phone-play-btn" class="p-2 hover:bg-white/10 rounded-full text-rose-400 hover:text-rose-300 transition" title="Iniciar">
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </button>
+            <button id="phone-pause-btn" class="hidden p-2 hover:bg-white/10 rounded-full text-yellow-400 hover:text-yellow-300 transition" title="Pausar">
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+              </svg>
+            </button>
+            <button id="phone-reset-btn" class="p-2 hover:bg-white/10 rounded-full text-slate-300 hover:text-white transition" title="Reiniciar">
+              <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18"/>
+              </svg>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Panel derecho: Ajustes y personalización del estudio -->
+    <div class="w-full lg:w-[480px] bg-slate-900 border-t lg:border-t-0 lg:border-l border-slate-800 flex flex-col shrink-0 overflow-y-auto">
+      
+      <!-- Navegación por Pestañas -->
+      <div class="flex border-b border-slate-800 sticky top-0 bg-slate-900 z-10 shrink-0">
+        <button id="tab-presets-btn" class="flex-1 py-4 text-center text-sm font-semibold border-b-2 border-rose-500 text-slate-100 transition">
+          🔥 Plantillas
+        </button>
+        <button id="tab-routine-btn" class="flex-1 py-4 text-center text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
+          ⏱️ Rutina HIIT
+        </button>
+        <button id="tab-design-btn" class="flex-1 py-4 text-center text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
+          🎨 Diseño & Fondo
+        </button>
+      </div>
+
+      <!-- Contenido de las Pestañas -->
+      <div class="p-6 flex-1 space-y-6">
+
+        <!-- ================= PESTAÑA 1: PLANTILLAS ================= -->
+        <div id="tab-presets" class="space-y-6">
+          <div>
+            <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">Estilos de Cronómetro</h3>
+            <p class="text-xs text-slate-400 mb-4">Selecciona un preajuste estético para cambiar los colores, etiquetas y estilos del cronómetro de forma inmediata.</p>
+            
+            <div id="preset-grid" class="grid grid-cols-2 gap-3">
+              <!-- Cargado dinámicamente mediante Javascript -->
+            </div>
+          </div>
+
+          <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800 space-y-3">
+            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">¿Cómo grabarlo para tus videos?</h4>
+            <ol class="text-xs text-slate-400 list-decimal list-inside space-y-1.5">
+              <li>Configura la rutina de intervalos en la pestaña <span class="text-slate-300">"Rutina HIIT"</span>.</li>
+              <li>Ve a la pestaña <span class="text-slate-300">"Diseño & Fondo"</span> y cambia el fondo del lienzo a <strong class="text-emerald-400">Croma Verde</strong> o <strong class="text-slate-300">Negro Puro</strong>.</li>
+              <li>Graba la pantalla de tu computadora o celular mientras inicias el temporizador aquí.</li>
+              <li>Importa la grabación a tu editor (CapCut, Premiere, DaVinci), aplica <strong>Chroma Key</strong> (o cambia el modo de fusión de capa a "Pantalla / Aclarar" si usaste fondo negro) y colócalo sobre tu video.</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- ================= PESTAÑA 2: CONFIGURACIÓN HIIT ================= -->
+        <div id="tab-routine" class="hidden space-y-6">
+          <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-2">Configuración de Tiempos HIIT</h3>
+          
+          <div class="space-y-4">
+            <!-- Tiempo de Preparación -->
+            <div>
+              <div class="flex justify-between text-xs mb-1.5">
+                <span class="text-slate-400 flex items-center gap-1">🕒 Preparación (Cuenta Atrás)</span>
+                <span id="val-prep" class="text-amber-400 font-bold">10s</span>
+              </div>
+              <input type="range" id="input-prep" min="3" max="30" value="10" class="w-full accent-rose-500 bg-slate-800 rounded-lg appearance-none h-2 cursor-pointer">
+            </div>
+
+            <!-- Tiempo de Trabajo -->
+            <div>
+              <div class="flex justify-between text-xs mb-1.5">
+                <span class="text-slate-400 flex items-center gap-1">💪 Intervalo de Trabajo</span>
+                <span id="val-work" class="text-rose-500 font-bold">30s</span>
+              </div>
+              <input type="range" id="input-work" min="5" max="120" value="30" class="w-full accent-rose-500 bg-slate-800 rounded-lg appearance-none h-2 cursor-pointer">
+            </div>
+
+            <!-- Tiempo de Descanso -->
+            <div>
+              <div class="flex justify-between text-xs mb-1.5">
+                <span class="text-slate-400 flex items-center gap-1">🔋 Intervalo de Descanso</span>
+                <span id="val-rest" class="text-emerald-400 font-bold">15s</span>
+              </div>
+              <input type="range" id="input-rest" min="3" max="90" value="15" class="w-full accent-rose-500 bg-slate-800 rounded-lg appearance-none h-2 cursor-pointer">
+            </div>
+
+            <!-- Rondas -->
+            <div>
+              <div class="flex justify-between text-xs mb-1.5">
+                <span class="text-slate-400 flex items-center gap-1">🔄 Número de Rondas</span>
+                <span id="val-rounds" class="text-blue-400 font-bold">4 rondas</span>
+              </div>
+              <input type="range" id="input-rounds" min="1" max="20" value="4" class="w-full accent-rose-500 bg-slate-800 rounded-lg appearance-none h-2 cursor-pointer">
+            </div>
+          </div>
+
+          <!-- Ajuste de Sonido -->
+          <div class="bg-slate-950/80 p-4 rounded-xl border border-slate-800 space-y-4">
+            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Efectos de Sonido</h4>
+            
+            <div class="flex items-center justify-between">
+              <label for="enable-audio" class="text-xs text-slate-400 cursor-pointer flex items-center gap-2">
+                <input type="checkbox" id="enable-audio" checked class="w-4 h-4 accent-rose-500 rounded bg-slate-800 border-slate-700">
+                Habilitar pitidos acústicos (Aviso 3-2-1 Beep)
+              </label>
+              <button id="test-beep-btn" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700">
+                Probar Beep
+              </button>
+            </div>
+          </div>
+
+          <!-- Botones de Control Principal -->
+          <div class="grid grid-cols-2 gap-3 pt-2">
+            <button id="studio-play-btn" class="w-full bg-rose-600 hover:bg-rose-500 active:scale-95 text-white font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center gap-2 text-sm shadow-lg shadow-rose-600/15">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              Iniciar Rutina
+            </button>
+            <button id="studio-reset-btn" class="w-full bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center gap-2 text-sm border border-slate-700">
+              <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18"/></svg>
+              Reiniciar
+            </button>
+          </div>
+        </div>
+
+        <!-- ================= PESTAÑA 3: DISEÑO Y FONDO ================= -->
+        <div id="tab-design" class="hidden space-y-6">
+          
+          <!-- Escala y Posición -->
+          <div class="space-y-4">
+            <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Ajustes de Escala</h3>
+            
+            <!-- Escalador -->
+            <div>
+              <div class="flex justify-between text-xs mb-1.5">
+                <span class="text-slate-400">Tamaño del Widget</span>
+                <span id="val-scale" class="font-bold text-slate-200">100%</span>
+              </div>
+              <input type="range" id="input-scale" min="60" max="140" value="100" class="w-full accent-rose-500 bg-slate-800 rounded-lg appearance-none h-2 cursor-pointer">
+            </div>
+
+            <!-- Selección rápida de posición vertical -->
+            <div>
+              <span class="block text-xs text-slate-400 mb-2">Posición Vertical (Rápida)</span>
+              <div class="grid grid-cols-3 gap-2">
+                <button data-pos="12%" class="btn-position bg-slate-800 hover:bg-slate-700 py-1.5 px-3 rounded text-xs border border-transparent hover:border-slate-600 transition text-slate-300">
+                  Superior
+                </button>
+                <button data-pos="25%" class="btn-position bg-rose-600/20 text-rose-300 border border-rose-500/40 py-1.5 px-3 rounded text-xs transition">
+                  Medio-Alto
+                </button>
+                <button data-pos="45%" class="btn-position bg-slate-800 hover:bg-slate-700 py-1.5 px-3 rounded text-xs border border-transparent hover:border-slate-600 transition text-slate-300">
+                  Centrado
+                </button>
+              </div>
+            </div>
+
+            <!-- Etiquetas Personalizadas -->
+            <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800 space-y-3">
+              <span class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Textos Personalizados</span>
+              
+              <div>
+                <label class="block text-[10px] text-slate-400 uppercase tracking-wider mb-1">Etiqueta Superior (Fase)</label>
+                <input type="text" id="custom-label" value="TRABAJO" placeholder="Ej: HIIT TIMER, PREPÁRATE" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-rose-500">
+              </div>
+
+              <div>
+                <label class="block text-[10px] text-slate-400 uppercase tracking-wider mb-1">Texto Inferior (Motivación)</label>
+                <input type="text" id="custom-tag" value="¡DALE CON TODO!" placeholder="Ej: RECUPERA, GO!, VAMOS" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-rose-500">
+              </div>
+            </div>
+
+            <!-- Paleta de colores e intensidad -->
+            <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800 space-y-3">
+              <span class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Estética del Widget</span>
+              
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-[10px] text-slate-400 mb-1">Color de LEDs</label>
+                  <div class="flex gap-2 items-center">
+                    <input type="color" id="color-led" value="#f43f5e" class="bg-transparent border-0 w-8 h-8 cursor-pointer rounded">
+                    <span id="color-led-hex" class="text-xs font-mono text-slate-400">#f43f5e</span>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-[10px] text-slate-400 mb-1">Fondo Widget</label>
+                  <div class="flex gap-2 items-center">
+                    <input type="color" id="color-widget-bg" value="#000000" class="bg-transparent border-0 w-8 h-8 cursor-pointer rounded">
+                    <span id="color-bg-hex" class="text-xs font-mono text-slate-400">#000000</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Opacidad y Brillo -->
+              <div class="space-y-2 pt-2">
+                <div class="flex justify-between text-xs">
+                  <span class="text-slate-400">Opacidad del Fondo</span>
+                  <span id="val-bg-opacity" class="text-slate-300">85%</span>
+                </div>
+                <input type="range" id="input-bg-opacity" min="0" max="100" value="85" class="w-full accent-rose-500 bg-slate-800 rounded-lg appearance-none h-1.5 cursor-pointer">
+              </div>
+              <div class="space-y-2">
+                <div class="flex justify-between text-xs">
+                  <span class="text-slate-400">Intensidad del Glow LED</span>
+                  <span id="val-glow" class="text-slate-300">Fuerte</span>
+                </div>
+                <input type="range" id="input-glow" min="0" max="3" value="2" class="w-full accent-rose-500 bg-slate-800 rounded-lg appearance-none h-1.5 cursor-pointer">
+              </div>
+            </div>
+          </div>
+
+          <!-- Tipo de Fondo del Canvas -->
+          <div class="space-y-3">
+            <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Fondo del Canvas de Edición</h3>
+            
+            <div class="grid grid-cols-3 gap-2">
+              <button id="btn-bg-greenscreen" class="flex flex-col items-center gap-1 p-2 bg-emerald-950/40 border-2 border-emerald-500 text-emerald-300 rounded text-xs font-medium transition text-center">
+                <span class="w-4 h-4 bg-[#00FF00] rounded-sm shadow border border-white/20"></span>
+                Croma Verde
+              </button>
+              <button id="btn-bg-video" class="flex flex-col items-center gap-1 p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs font-medium transition text-center">
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                Video Demo
+              </button>
+              <button id="btn-bg-dark" class="flex flex-col items-center gap-1 p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs font-medium transition text-center">
+                <span class="w-4 h-4 bg-slate-950 rounded border border-slate-700"></span>
+                Negro Puro
+              </button>
+            </div>
+
+            <!-- Mostrar/Ocultar Guias de Instagram -->
+            <div class="pt-2">
+              <label for="toggle-instagram-gui" class="flex items-center gap-2 text-xs text-slate-400 cursor-pointer">
+                <input type="checkbox" id="toggle-instagram-gui" checked class="w-4 h-4 accent-rose-500 rounded bg-slate-800 border-slate-700">
+                Mostrar simulación de interfaz de Instagram Reel
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Guías de Exportación -->
+      <div class="p-6 bg-slate-950 border-t border-slate-800 space-y-3 shrink-0">
+        <div class="flex justify-between items-center">
+          <span class="text-xs text-slate-400">¿Listo para exportar?</span>
+          <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-rose-400 font-bold">RECOMENDADO</span>
+        </div>
+        <p class="text-xs text-slate-400 leading-normal">
+          Usa tu capturador de pantalla favorito (como OBS Studio, Screenflow o la función nativa de tu celular) para grabar el teléfono simulado con el fondo <strong>Croma Verde</strong> mientras corre la rutina, y luego monta el clip en tu editor favorito.
+        </p>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Lógica y Engine Javascript -->
+  <script>
+    // Configuración estructural para el renderizado de los 7 segmentos
+    const SEG = {
+      0:[1,1,1,1,1,1,0], 1:[0,1,1,0,0,0,0], 2:[1,1,0,1,1,0,1],
+      3:[1,1,1,1,0,0,1], 4:[0,1,1,0,0,1,1], 5:[1,0,1,1,0,1,1],
+      6:[1,0,1,1,1,1,1], 7:[1,1,1,0,0,0,0], 8:[1,1,1,1,1,1,1], 9:[1,1,1,1,0,1,1]
+    };
+
+    const POLY = [
+      "8,4 32,4 28,9 12,9",
+      "34,6 34,32 29,28 29,11",
+      "34,34 34,60 29,55 29,38",
+      "8,62 32,62 28,57 12,57",
+      "6,34 6,60 11,55 11,38",
+      "6,6 6,32 11,28 11,11",
+      "8,33 12,29 28,29 32,33 28,37 12,37"
+    ];
+
+    // Presets visuales listos para aplicar
+    const STYLES_PRESETS = [
+      { id: 'trabajo', name: 'Rojo Trabajo', bg: '#000000', color: '#ff2c55', glow: 'shadow-[0_0_15px_rgba(254,44,85,0.6)]', label: 'TRABAJO', tag: 'DALE CON TODO' },
+      { id: 'cuenta_atras', name: 'Verde Cuenta Atrás', bg: '#000000', color: '#3ddc84', glow: 'shadow-[0_0_15px_rgba(61,220,132,0.6)]', label: 'PREPÁRATE', tag: 'EMPEZAMOS' },
+      { id: 'ultimo_esfuerzo', name: 'Ultra Naranja', bg: '#100600', color: '#ff6200', glow: 'shadow-[0_0_18px_rgba(255,98,0,0.75)]', label: 'ULTIMO ROUND', tag: 'NO TE DETENGAS' },
+      { id: 'recupera', name: 'Amarillo Recupera', bg: '#080800', color: '#ffcc00', glow: 'shadow-[0_0_15px_rgba(255,204,0,0.5)]', label: 'DESCANSO', tag: 'RECUPERA AIRE' },
+      { id: 'neon_pink', name: 'Cyber Neon', bg: '#080008', color: '#ff00a0', glow: 'shadow-[0_0_20px_rgba(255,0,160,0.8)]', label: 'HIIT TIME', tag: 'SUDAR AL MÁXIMO' },
+      { id: 'cold_blue', name: 'Ice Workout', bg: '#000810', color: '#00bfff', glow: 'shadow-[0_0_15px_rgba(0,191,255,0.6)]', label: 'RITMO CONSTANTE', tag: 'FUERZA MENTAL' }
+    ];
+
+    // Variables de Estado
+    let countdownPrep = 10;
+    let timeWork = 30;
+    let timeRest = 15;
+    let totalRounds = 4;
+
+    let currentPhase = 'PREPARATION'; // PREPARATION, WORK, REST, FINISHED
+    let currentRound = 1;
+    let timeRemaining = countdownPrep;
+    let isRunning = false;
+    let intervalId = null;
+
+    // Sintetizador Web Audio para efectos de sonido retro de alta precisión
+    let audioContext = null;
+    function playBeep(frequency, duration) {
+      if (!document.getElementById('enable-audio').checked) return;
+      try {
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        
+        osc.frequency.setValueAtTime(frequency, audioContext.currentTime);
+        gain.gain.setValueAtTime(0.1, audioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+        
+        osc.start();
+        osc.stop(audioContext.currentTime + duration);
+      } catch (e) {
+        console.warn("No se pudo iniciar el AudioContext debido a bloqueos de seguridad del navegador.", e);
+      }
+    }
+
+    // Dibujador de dígitos LED vectoriales (SVG)
+    function digitSVG(n, color) {
+      const s = SEG[n];
+      const polys = s.map((on, i) => {
+        const opacityValue = on ? 1.0 : 0.08;
+        return `<polygon points="${POLY[i]}" fill="${color}" fill-opacity="${opacityValue}" class="transition-all duration-150" />`;
+      }).join('');
+      return `<svg viewBox="0 0 40 70" width="55" height="96">${polys}</svg>`;
+    }
+
+    // Elementos DOM
+    const widgetDigits = document.getElementById('widget-digits');
+    const widgetLabel = document.getElementById('widget-label');
+    const widgetTag = document.getElementById('widget-tag');
+    const timerCard = document.getElementById('timer-card');
+    const currentRoundText = document.getElementById('current-round-text');
+    const totalRoundsText = document.getElementById('total-rounds-text');
+
+    // Renderizado del marcador numérico digital
+    function renderDigits(seconds, ledColor) {
+      const formatted = String(seconds).padStart(2, '0');
+      widgetDigits.innerHTML = digitSVG(formatted[0], ledColor) + digitSVG(formatted[1], ledColor);
+    }
+
+    // Estilo de brillo / Glow para el cronómetro
+    function getGlowStyle(colorHex, intensity) {
+      if (intensity == 0) return 'none';
+      const opacity = [0, 0.25, 0.55, 0.85][intensity];
+      return `drop-shadow(0 0 ${intensity * 4}px ${colorHex}${Math.round(opacity*255).toString(16).padStart(2, '0')})`;
+    }
+
+    // Actualiza la estética general del widget desde los inputs
+    function updateWidgetAesthetics() {
+      const ledColor = document.getElementById('color-led').value;
+      const widgetBg = document.getElementById('color-widget-bg').value;
+      const bgOpacity = document.getElementById('input-bg-opacity').value / 100;
+      const glowLevel = document.getElementById('input-glow').value;
+
+      // Actualizar valores de texto hexadecimal de colores
+      document.getElementById('color-led-hex').textContent = ledColor;
+      document.getElementById('color-bg-hex').textContent = widgetBg;
+
+      // Conversión de hexadecimal a RGBA para soporte de transparencia
+      const r = parseInt(widgetBg.substring(1,3), 16);
+      const g = parseInt(widgetBg.substring(3,5), 16);
+      const b = parseInt(widgetBg.substring(5,7), 16);
+      timerCard.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${bgOpacity})`;
+
+      // Brillo Glow LED
+      widgetDigits.style.filter = getGlowStyle(ledColor, glowLevel);
+      
+      // Mantener dígitos renderizados actualizados con el color correcto
+      renderDigits(timeRemaining, ledColor);
+    }
+
+    // Prueba de sonido rápida
+    document.getElementById('test-beep-btn').addEventListener('click', () => {
+      playBeep(880, 0.15); 
+    });
+
+    // Controladores de Pestañas
+    const tabPresetsBtn = document.getElementById('tab-presets-btn');
+    const tabRoutineBtn = document.getElementById('tab-routine-btn');
+    const tabDesignBtn = document.getElementById('tab-design-btn');
+
+    const tabPresets = document.getElementById('tab-presets');
+    const tabRoutine = document.getElementById('tab-routine');
+    const tabDesign = document.getElementById('tab-design');
+
+    function switchTab(activeBtn, activeTab) {
+      [tabPresetsBtn, tabRoutineBtn, tabDesignBtn].forEach(btn => {
+        btn.classList.remove('border-rose-500', 'text-slate-100');
+        btn.classList.add('border-transparent', 'text-slate-400');
+      });
+      [tabPresets, tabRoutine, tabDesign].forEach(tab => tab.classList.add('hidden'));
+
+      activeBtn.classList.remove('border-transparent', 'text-slate-400');
+      activeBtn.classList.add('border-rose-500', 'text-slate-100');
+      activeTab.classList.remove('hidden');
+    }
+
+    tabPresetsBtn.addEventListener('click', () => switchTab(tabPresetsBtn, tabPresets));
+    tabRoutineBtn.addEventListener('click', () => switchTab(tabRoutineBtn, tabRoutine));
+    tabDesignBtn.addEventListener('click', () => switchTab(tabDesignBtn, tabDesign));
+
+    // Carga de la rejilla de plantillas predefinidas
+    const presetGrid = document.getElementById('preset-grid');
+    STYLES_PRESETS.forEach(preset => {
+      const btn = document.createElement('button');
+      btn.className = "flex flex-col gap-2 items-start p-3 bg-slate-950/60 hover:bg-slate-800 border border-slate-800 rounded-xl transition text-left group w-full";
+      btn.innerHTML = `
+        <div class="flex items-center gap-2 w-full">
+          <span class="w-3.5 h-3.5 rounded-full border border-white/20" style="background-color: ${preset.color}"></span>
+          <span class="text-xs font-semibold text-slate-300 group-hover:text-white transition">${preset.name}</span>
+        </div>
+        <div class="text-[10px] text-slate-500 flex justify-between w-full">
+          <span>${preset.label}</span>
+          <span>${preset.tag}</span>
+        </div>
+      `;
+      btn.onclick = () => {
+        document.getElementById('color-led').value = preset.color;
+        document.getElementById('color-widget-bg').value = preset.bg;
+        document.getElementById('custom-label').value = preset.label;
+        document.getElementById('custom-tag').value = preset.tag;
+        
+        widgetLabel.textContent = preset.label;
+        widgetTag.textContent = preset.tag;
+        
+        // Estilización de color de fase
+        if(currentPhase === 'PREPARATION') widgetLabel.style.color = '#fbbf24'; 
+        else if(currentPhase === 'WORK') widgetLabel.style.color = preset.color;
+        else if(currentPhase === 'REST') widgetLabel.style.color = '#3ddc84'; 
+
+        updateWidgetAesthetics();
+      };
+      presetGrid.appendChild(btn);
+    });
+
+    // Controladores de rango para tiempo HIIT
+    const inputPrep = document.getElementById('input-prep');
+    const inputWork = document.getElementById('input-work');
+    const inputRest = document.getElementById('input-rest');
+    const inputRounds = document.getElementById('input-rounds');
+
+    const valPrep = document.getElementById('val-prep');
+    const valWork = document.getElementById('val-work');
+    const valRest = document.getElementById('val-rest');
+    const valRounds = document.getElementById('val-rounds');
+
+    function syncRoutineValues() {
+      countdownPrep = parseInt(inputPrep.value);
+      timeWork = parseInt(inputWork.value);
+      timeRest = parseInt(inputRest.value);
+      totalRounds = parseInt(inputRounds.value);
+
+      valPrep.textContent = countdownPrep + 's';
+      valWork.textContent = timeWork + 's';
+      valRest.textContent = timeRest + 's';
+      valRounds.textContent = totalRounds + (totalRounds > 1 ? ' rondas' : ' ronda');
+
+      totalRoundsText.textContent = totalRounds;
+
+      if (!isRunning) {
+        resetRoutine();
+      }
+    }
+
+    inputPrep.addEventListener('input', syncRoutineValues);
+    inputWork.addEventListener('input', syncRoutineValues);
+    inputRest.addEventListener('input', syncRoutineValues);
+    inputRounds.addEventListener('input', syncRoutineValues);
+
+    // Ajuste de tamaño de escala
+    const inputScale = document.getElementById('input-scale');
+    const valScale = document.getElementById('val-scale');
+    const widgetContainer = document.getElementById('widget-container');
+
+    inputScale.addEventListener('input', () => {
+      const scaleVal = inputScale.value;
+      valScale.textContent = scaleVal + '%';
+      widgetContainer.style.transform = `translateX(-50%) scale(${scaleVal / 100})`;
+    });
+
+    // Ajustes rápidos de posición vertical
+    const positionButtons = document.querySelectorAll('.btn-position');
+    positionButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        positionButtons.forEach(b => b.className = "btn-position bg-slate-800 hover:bg-slate-700 py-1.5 px-3 rounded text-xs border border-transparent hover:border-slate-600 transition text-slate-300");
+        
+        btn.className = "btn-position bg-rose-600/20 text-rose-300 border border-rose-500/40 py-1.5 px-3 rounded text-xs transition";
+        widgetContainer.style.top = btn.getAttribute('data-pos');
+      });
+    });
+
+    // Edición interactiva de etiquetas de texto personalizados
+    const inputCustomLabel = document.getElementById('custom-label');
+    const inputCustomTag = document.getElementById('custom-tag');
+
+    inputCustomLabel.addEventListener('input', () => {
+      if(currentPhase === 'WORK') widgetLabel.textContent = inputCustomLabel.value || "TRABAJO";
+    });
+    inputCustomTag.addEventListener('input', () => {
+      if(currentPhase === 'WORK') widgetTag.textContent = inputCustomTag.value || "DALE CON TODO";
+    });
+
+    // Listeners del editor estético
+    document.getElementById('color-led').addEventListener('input', updateWidgetAesthetics);
+    document.getElementById('color-widget-bg').addEventListener('input', updateWidgetAesthetics);
+    document.getElementById('input-bg-opacity').addEventListener('input', updateWidgetAesthetics);
+    document.getElementById('input-glow').addEventListener('input', updateWidgetAesthetics);
+
+    // Conmutador del overlay simulado de Instagram
+    const toggleInstagramGui = document.getElementById('toggle-instagram-gui');
+    const instagramGui = document.getElementById('instagram-gui');
+    toggleInstagramGui.addEventListener('change', () => {
+      instagramGui.style.opacity = toggleInstagramGui.checked ? '1' : '0';
+    });
+
+    // Conmutadores de tipo de fondo del lienzo
+    const btnBgGreenscreen = document.getElementById('btn-bg-greenscreen');
+    const btnBgVideo = document.getElementById('btn-bg-video');
+    const btnBgDark = document.getElementById('btn-bg-dark');
+
+    const greenScreenLayer = document.getElementById('green-screen-layer');
+    const videoBackdrop = document.getElementById('video-backdrop');
+    const solidBackdrop = document.getElementById('solid-backdrop');
+
+    function deactivateAllBgs() {
+      [btnBgGreenscreen, btnBgVideo, btnBgDark].forEach(btn => {
+        btn.classList.remove('border-emerald-500', 'bg-emerald-950/40', 'text-emerald-300', 'border-slate-600', 'bg-slate-800', 'text-slate-100');
+        btn.classList.add('bg-slate-800', 'text-slate-300', 'border-transparent');
+      });
+      greenScreenLayer.classList.add('hidden');
+      videoBackdrop.classList.add('hidden');
+      solidBackdrop.classList.add('hidden');
+    }
+
+    btnBgGreenscreen.addEventListener('click', () => {
+      deactivateAllBgs();
+      btnBgGreenscreen.classList.add('border-emerald-500', 'bg-emerald-950/40', 'text-emerald-300');
+      greenScreenLayer.classList.remove('hidden');
+    });
+
+    btnBgVideo.addEventListener('click', () => {
+      deactivateAllBgs();
+      btnBgVideo.classList.add('border-slate-600', 'bg-slate-800', 'text-slate-100');
+      videoBackdrop.classList.remove('hidden');
+    });
+
+    btnBgDark.addEventListener('click', () => {
+      deactivateAllBgs();
+      btnBgDark.classList.add('border-slate-600', 'bg-slate-800', 'text-slate-100');
+      solidBackdrop.classList.remove('hidden');
+    });
+
+
+    // ================= MOTOR INTERVÁLICO HIIT (Engine) =================
+
+    const playIcons = [document.getElementById('phone-play-btn'), document.getElementById('studio-play-btn')];
+    const pauseIcons = [document.getElementById('phone-pause-btn')];
+    const resetIcons = [document.getElementById('phone-reset-btn'), document.getElementById('studio-reset-btn')];
+
+    function setPlayingState(playing) {
+      isRunning = playing;
+      if (playing) {
+        playIcons.forEach(btn => {
+          if(btn.id === 'studio-play-btn') {
+            btn.innerHTML = `<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg> Pausar`;
+            btn.classList.replace('bg-rose-600', 'bg-amber-600');
+            btn.classList.replace('hover:bg-rose-500', 'hover:bg-amber-500');
+          } else {
+            btn.classList.add('hidden');
+          }
+        });
+        pauseIcons.forEach(btn => btn.classList.remove('hidden'));
+      } else {
+        playIcons.forEach(btn => {
+          if(btn.id === 'studio-play-btn') {
+            btn.innerHTML = `<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> Reanudar`;
+            btn.classList.replace('bg-amber-600', 'bg-rose-600');
+            btn.classList.replace('hover:bg-amber-500', 'hover:bg-rose-500');
+          } else {
+            btn.classList.remove('hidden');
+          }
+        });
+        pauseIcons.forEach(btn => btn.classList.add('hidden'));
+      }
+    }
+
+    function resetRoutine() {
+      clearInterval(intervalId);
+      setPlayingState(false);
+      currentPhase = 'PREPARATION';
+      currentRound = 1;
+      timeRemaining = countdownPrep;
+      
+      // Restablecer textos por defecto de preparación
+      widgetLabel.textContent = "PREPÁRATE";
+      widgetLabel.style.color = '#fbbf24'; // Color ámbar / amarillo
+      widgetTag.textContent = "¡LISTO!";
+      currentRoundText.textContent = currentRound;
+      
+      const ledColor = document.getElementById('color-led').value;
+      renderDigits(timeRemaining, ledColor);
+    }
+
+    function tick() {
+      if (timeRemaining > 0) {
+        timeRemaining--;
+        
+        // Sonidos acústicos de advertencia (últimos 3 segundos del intervalo)
+        if (timeRemaining <= 3 && timeRemaining > 0) {
+          playBeep(440, 0.1); 
+        }
+        
+        const ledColor = document.getElementById('color-led').value;
+        renderDigits(timeRemaining, ledColor);
+      }
+
+      if (timeRemaining === 0) {
+        // Sonido de tono agudo para indicar transición/cambio de intervalo
+        playBeep(880, 0.45);
+
+        if (currentPhase === 'PREPARATION') {
+          // Cambiar a la fase de trabajo de la Ronda 1
+          currentPhase = 'WORK';
+          timeRemaining = timeWork;
+          widgetLabel.textContent = inputCustomLabel.value || "TRABAJO";
+          widgetLabel.style.color = document.getElementById('color-led').value;
+          widgetTag.textContent = inputCustomTag.value || "¡GO, GO!";
+        } 
+        else if (currentPhase === 'WORK') {
+          // Verificar si ya se finalizaron todas las rondas
+          if (currentRound >= totalRounds) {
+            currentPhase = 'FINISHED';
+            clearInterval(intervalId);
+            setPlayingState(false);
+            widgetLabel.textContent = "¡LOGRADO!";
+            widgetLabel.style.color = '#10b981'; // Verde sólido
+            widgetTag.textContent = "ENTRENAMIENTO OK";
+            playBeep(1200, 0.8); // Pitido de victoria largo
+            return;
+          } else {
+            // Ir a la fase de descanso
+            currentPhase = 'REST';
+            timeRemaining = timeRest;
+            widgetLabel.textContent = "DESCANSO";
+            widgetLabel.style.color = '#10b981'; // Verde esmeralda
+            widgetTag.textContent = "RECUPERA EL AIRE";
+          }
+        } 
+        else if (currentPhase === 'REST') {
+          // Transición de Descanso -> Trabajo del siguiente Round
+          currentRound++;
+          currentRoundText.textContent = currentRound;
+          currentPhase = 'WORK';
+          timeRemaining = timeWork;
+          widgetLabel.textContent = inputCustomLabel.value || "TRABAJO";
+          widgetLabel.style.color = document.getElementById('color-led').value;
+          widgetTag.textContent = inputCustomTag.value || "¡SIGUE ASÍ!";
+        }
+
+        const ledColor = document.getElementById('color-led').value;
+        renderDigits(timeRemaining, ledColor);
+      }
+    }
+
+    function togglePlay() {
+      // Iniciar o reanudar el contexto de audio mediante gesto directo de usuario (Requisito del navegador)
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+
+      if (isRunning) {
+        clearInterval(intervalId);
+        setPlayingState(false);
+      } else {
+        if (currentPhase === 'FINISHED') {
+          resetRoutine();
+        }
+        setPlayingState(true);
+        intervalId = setInterval(tick, 1000);
+      }
+    }
+
+    // Unir controladores de disparo
+    playIcons.forEach(btn => btn.addEventListener('click', togglePlay));
+    pauseIcons.forEach(btn => btn.addEventListener('click', togglePlay));
+    resetIcons.forEach(btn => btn.addEventListener('click', resetRoutine));
+
+
+    // ================= SOPORTE PARA ARRASTRAR EL TEMPORIZADOR =================
+    let isDragging = false;
+    let startY;
+    let startTopPercent;
+
+    widgetContainer.addEventListener('mousedown', startDrag);
+    widgetContainer.addEventListener('touchstart', startDrag, { passive: true });
+
+    function startDrag(e) {
+      isDragging = true;
+      const clientY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+      startY = clientY;
+      
+      const rect = widgetContainer.getBoundingClientRect();
+      const parentRect = widgetContainer.parentElement.getBoundingClientRect();
+      
+      startTopPercent = parseFloat(widgetContainer.style.top) || 25;
+      
+      document.addEventListener('mousemove', onDrag);
+      document.addEventListener('touchmove', onDrag, { passive: false });
+      document.addEventListener('mouseup', stopDrag);
+      document.addEventListener('touchend', stopDrag);
+    }
+
+    function onDrag(e) {
+      if (!isDragging) return;
+      if (e.type === 'touchmove') e.preventDefault(); 
+
+      const clientY = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
+      const deltaY = clientY - startY;
+      
+      const parentHeight = widgetContainer.parentElement.clientHeight;
+      const deltaPercent = (deltaY / parentHeight) * 100;
+      
+      let newPercent = startTopPercent + deltaPercent;
+      
+      // Restricciones para que no sea arrastrado fuera del área del celular
+      newPercent = Math.max(8, Math.min(newPercent, 65));
+      
+      widgetContainer.style.top = `${newPercent}%`;
+      
+      // Deseleccionar botones predefinidos al hacer un arrastre libre personalizado
+      positionButtons.forEach(b => b.className = "btn-position bg-slate-800 hover:bg-slate-700 py-1.5 px-3 rounded text-xs border border-transparent hover:border-slate-600 transition text-slate-300");
+    }
+
+    function stopDrag() {
+      isDragging = false;
+      document.removeEventListener('mousemove', onDrag);
+      document.removeEventListener('touchmove', onDrag);
+    }
+
+    // Inicialización del estado de arranque
+    window.onload = function() {
+      syncRoutineValues();
+      updateWidgetAesthetics();
+    };
+  </script>
+</body>
+</html>
