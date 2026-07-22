@@ -2,13 +2,13 @@
 
 ## Project state
 
-**Fases 1–7 completadas**: la app genera overlays de cuenta regresiva y exporta un MP4 en resoluciones Reel (1080×1920) o Post (1080×1080) @ 30 fps de duración exacta. Incluye selector de fondo (verde/negro), selector de layout (Reel/Post), motor determinístico `renderFrame(ctx, t)` parametrizado por resolución en `src/renderer.js`, exportación con FFmpeg.wasm en `src/exporter.js`, progreso de exportación y pulido visual del reloj. No quedan fases pendientes del alcance actual.
+**Fases 1–8 completadas**: la app genera overlays de cuenta regresiva y exporta un MP4 en resoluciones Reel (1080×1920) o Post (1080×1080) @ 30 fps de duración exacta. Incluye selector de fondo (verde/negro), selector de layout (Reel/Post), motor determinístico `renderFrame(ctx, t)` parametrizado por resolución en `src/renderer.js`, exportación con FFmpeg.wasm (single-thread, compatible HTTP sin COOP/COEP) en `src/exporter.js`, progreso de exportación y pulido visual del reloj. **Deployment con Docker + nginx + Cloudflare Tunnel** configurado en `Dockerfile`, `docker-compose.yml` y `nginx.conf`.
 
 ## Key constraints
 
 - **pnpm only** — never use npm or yarn. `.npmrc` sets `save-exact=true`.
 - **Duration must be exact** — never use `Date.now()`, `performance.now()`, or `MediaRecorder`. Frame `i` at `i / fps`. `N` frames @ 30 fps = `N/30` seconds exactly.
-- **COOP/COEP headers** required for FFmpeg.wasm multi-thread. Configure in `vite.config.js`.
+- **FFmpeg.wasm single-thread** (`@ffmpeg/core`, not `-mt`) — no `SharedArrayBuffer` requirement, works over HTTP without COOP/COEP.
 - **FFmpeg.wasm lazy-loaded** — only on first export.
 - **Fonts loaded via `document.fonts.ready`** before first canvas render.
 

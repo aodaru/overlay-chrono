@@ -1,7 +1,7 @@
 export function formatSeconds(n) {
-  if (!Number.isFinite(n)) return '00';
+  if (!Number.isFinite(n)) return "00";
   const clamped = Math.max(0, Math.min(99, Math.floor(n)));
-  return String(clamped).padStart(2, '0');
+  return String(clamped).padStart(2, "0");
 }
 
 export function createCountdown({ duration, onTick, onEnd }) {
@@ -28,14 +28,14 @@ export function createCountdown({ duration, onTick, onEnd }) {
       let remaining = duration;
       onTick?.(remaining);
       remaining -= 1;
-      if (remaining < 1) {
+      if (remaining <= 0) {
         scheduleEnd();
         return;
       }
       timerId = setInterval(() => {
         onTick?.(remaining);
         remaining -= 1;
-        if (remaining < 1) {
+        if (remaining <= 0) {
           clearTimer();
           scheduleEnd();
         }
